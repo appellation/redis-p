@@ -1,8 +1,9 @@
 {
   "name": "redis-p",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Promisified Redis.",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
