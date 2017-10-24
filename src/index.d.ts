@@ -68,57 +68,116 @@ export interface LastCommand<T1, T2, U, R = Promise<U>> {
 }
 
 export interface Commands {
+  /**
+   * Listen for all requests received by the server in real time.
+   */
   monitor(): Promise<void>;
   MONITOPromise(): Promise<void>;
 
+  /**
+   * Get information and statistics about the server.
+   */
   info(section?: string | string[]): Promise<ServerInfo>;
   INFO(section?: string | string[]): Promise<ServerInfo>;
 
+  /**
+   * Ping the server.
+   */
   ping(message?: string): Promise<string>;
 
+  /**
+   * Post a message to a channel.
+   */
   publish(channel: string, value: string): Promise<number>;
 
+  /**
+   * Authenticate to the server.
+   */
   auth(password: string): Promise<string>;
   AUTH(password: string): Promise<string>;
 
+  /**
+   * KILL - Kill the connection of a client.
+   * LIST - Get the list of client connections.
+   * GETNAME - Get the current connection name.
+   * PAUSE - Stop processing commands from clients for some time.
+   * REPLY - Instruct the server whether to reply to commands.
+   * SETNAME - Set the current connection name.
+   */
   client: Command<string, any>;
   CLIENT: Command<string, any>;
 
+  /**
+   * Set multiple hash fields to multiple values.
+   */
   hmset: SetCommand<string | number, string>;
   HMSET: SetCommand<string | number, string>;
 
+  /**
+   * Listen for messages published to the given channels.
+   */
   subscribe: ListCommand<string, string>;
-  SUBSCPromiseIBE: ListCommand<string, string>;
+  SUBSCRIBE: ListCommand<string, string>;
 
+  /**
+   * Stop listening for messages posted to the given channels.
+   */
   unsubscribe: ListCommand<string, string>;
-  UNSUBSCPromiseIBE: ListCommand<string, string>;
+  UNSUBSCRIBE: ListCommand<string, string>;
 
+  /**
+   * Listen for messages published to channels matching the given patterns.
+   */
   psubscribe: ListCommand<string, string>;
-  PSUBSCPromiseIBE: ListCommand<string, string>;
+  PSUBSCRIBE: ListCommand<string, string>;
 
+  /**
+   * Stop listening for messages posted to channels matching the given patterns.
+   */
   punsubscribe: ListCommand<string, string>;
-  PUNSUBSCPromiseIBE: ListCommand<string, string>;
+  PUNSUBSCRIBE: ListCommand<string, string>;
 
+  /**
+   * Append a value to a key.
+   */
   append(key: string, value: string): Promise<number>;
   APPEND(key: string, value: string): Promise<number>;
 
+  /**
+   * Asynchronously rewrite the append-only file.
+   */
   bgwriteaof(): Promise<'OK'>;
-  BGWPromiseITEAOF(): Promise<'OK'>;
+  BGWRITEAOF(): Promise<'OK'>;
 
+  /**
+   * Asynchronously save the dataset to disk.
+   */
   bgsave(): Promise<string>;
   BGSAVE(): Promise<string>;
 
+  /**
+   * Count set bits in a string.
+   */
   bitcount(key: string): Promise<number>;
   bitcount(key: string, start: number, end: number): Promise<number>;
   BITCOUNT(key: string): Promise<number>;
   BITCOUNT(key: string, start: number, end: number): Promise<number>;
 
+  /**
+   * Perform arbitrary bitfield integer operations on strings.
+   */
   bitfield: KeyCommand<string | number, [number, number]>;
   BITFIELD: KeyCommand<string | number, [number, number]>;
 
+  /**
+   * Perform bitwise operations between strings.
+   */
   bitop(op: string, dest: string, ...args: string[]): Promise<number>;
   BITOP(op: string, dest: string, ...args: string[]): Promise<number>;
 
+  /**
+   * Find first bit set or clear in a string.
+   */
   bitpos(key: string, bit: number, start: number, end: number): Promise<number>;
   bitpos(key: string, bit: number, start: number): Promise<number>;
   bitpos(key: string, bit: number): Promise<number>;
@@ -126,150 +185,327 @@ export interface Commands {
   BITPOS(key: string, bit: number, start: number): Promise<number>;
   BITPOS(key: string, bit: number): Promise<number>;
 
+  /**
+   * Remove and get the first element in a list, or block until one is available.
+   */
   blpop: LastCommand<string, number, [string, string]>;
   BLPOP: LastCommand<string, number, [string, string]>;
 
+  /**
+   * Remove and get the last element in a list, or block until one is available.
+   */
   brpop: LastCommand<string, number, [string, string]>;
-  BPromisePOP: LastCommand<string, number, [string, string]>;
+  BRPOP: LastCommand<string, number, [string, string]>;
 
+  /**
+   * Pop a value from a list, push it to another list and return it; or block until one is available.
+   */
   brpoplpush(source: string, dest: string, timeout: number): Promise<[string, string]>;
-  BPromisePOPLPUSH(source: string, dest: string, timeout: number): Promise<[string, string]>;
+  BRPOPLPUSH(source: string, dest: string, timeout: number): Promise<[string, string]>;
 
+  /**
+   * ADDSLOTS - Assign new hash slots to receiving node.
+   * COUNT-FAILURE-REPORTS - Return the number of failure reports active for a given node.
+   * COUNTKEYSINSLOT - Return the number of local keys in the specified hash slot.
+   * DELSLOTS - Set hash slots as unbound in receiving node.
+   * FAILOVER - Forces a slave to perform a manual failover of its master.
+   * FORGET - Remove a node from the nodes table.
+   * GETKEYSINSLOT - Return local key names in the specified hash slot.
+   * INFO - Provides info about Redis Cluster node state.
+   * KEYSLOT - Returns the hash slot of the specified key.
+   * MEET - Force a node cluster to handshake with another node.
+   * NODES - Get cluster config for the node.
+   * REPLICATE - Reconfigure a node as a slave of the specified master node.
+   * RESET - Reset a Redis Cluster node.
+   * SAVECONFIG - Forces the node to save cluster state on disk.
+   * SET-CONFIG-EPOCH - Set the configuration epoch in a new node.
+   * SETSLOT - Bind a hash slot to a specified node.
+   * SLAVES - List slave nodes of the specified master node.
+   * SLOTS - Get array of Cluster slot to node mappings.
+   */
   cluster: Command<string, any, this>;
-  CLUSTEPromise: Command<string, any, this>;
+  CLUSTER: Command<string, any, this>;
 
+  /**
+   * Get array of Redis command details.
+   *
+   * COUNT - Get total number of Redis commands.
+   * GETKEYS - Extract keys given a full Redis command.
+   * INFO - Get array of specific REdis command details.
+   */
   command(): Promise<Array<[string, number, string[], number, number, number]>>;
   COMMAND(): Promise<Array<[string, number, string[], number, number, number]>>;
 
+  /**
+   * Get array of Redis command details.
+   *
+   * COUNT - Get array of Redis command details.
+   * GETKEYS - Extract keys given a full Redis command.
+   * INFO - Get array of specific Redis command details.
+   * GET - Get the value of a configuration parameter.
+   * REWRITE - Rewrite the configuration file with the in memory configuration.
+   * SET - Set a configuration parameter to the given value.
+   * RESETSTAT - Reset the stats returned by INFO.
+   */
   config: Command<string, boolean>;
   CONFIG: Command<string, boolean>;
 
+  /**
+   * Return the number of keys in the selected database.
+   */
   dbsize(): Promise<number>;
   DBSIZE(): Promise<number>;
 
+  /**
+   * OBJECT - Get debugging information about a key.
+   * SEGFAULT - Make the server crash.
+   */
   debug(): Command<string, boolean>;
   DEBUG(): Command<string, boolean>;
 
+  /**
+   * Decrement the integer value of a key by one.
+   */
   decr(key: string): Promise<number>;
   DECR(key: string): Promise<number>;
 
+  /**
+   * Decrement the integer value of a key by the given number.
+   */
   decrby(key: string, dec: number): Promise<number>;
   DECRBY(key: string, dec: number): Promise<number>;
 
+  /**
+   * Delete a key.
+   */
   del: Command<string, number>;
   DEL: Command<string, number>;
 
+  /**
+   * Discard all commands issued after MULTI.
+   */
   discard: Promise<'OK'>;
   DISCARD: Promise<'OK'>;
 
+  /**
+   * Return a serialized version of the value stored at the specified key.
+   */
   dump(key: string): Promise<string>;
   DUMP(key: string): Promise<string>;
 
+  /**
+   * Echo the given string.
+   */
   echo<T extends string>(message: T): Promise<T>;
   ECHO<T extends string>(message: T): Promise<T>;
 
+  /**
+   * Execute a Lua script server side.
+   */
   eval: Command<string | number, any>;
   EVAL: Command<string | number, any>;
 
+  /**
+   * Execute a Lue script server side.
+   */
   evalsha: Command<string | number, any>;
   EVALSHA: Command<string | number, any>;
 
+  /**
+   * Determine if a key exists.
+   */
   exists: Command<string, number>;
   EXISTS: Command<string, number>;
 
+  /**
+   * Set a key's time to live in seconds.
+   */
   expire(key: string, seconds: number): Promise<number>;
   EXPIRE(key: string, seconds: number): Promise<number>;
 
+  /**
+   * Set the expiration for a key as a UNIX timestamp.
+   */
   expireat(key: string, timestamp: number): Promise<number>;
   EXPIREAT(key: string, timestamp: number): Promise<number>;
 
+  /**
+   * Remove all keys from all databases.
+   */
   flushall(): Promise<string>;
   FLUSHALL(): Promise<string>;
 
+  /**
+   * Remove all keys from the current database.
+   */
   flushdb(): Promise<string>;
   FLUSHDB(): Promise<string>;
 
+  /**
+   * Add one or more geospatial items in the geospatial index represented using a sorted set.
+   */
   geoadd: KeyCommand<string | number, number>;
   GEOADD: KeyCommand<string | number, number>;
 
+  /**
+   * Returns members of a geospatial index as standard geohash strings.
+   */
   geohash: KeyCommand<string, number>;
   GEOHASH: KeyCommand<string, number>;
 
+  /**
+   * Returns longitude and latitude of members of a geospatial index.
+   */
   geopos: KeyCommand<string, Array<[number, number]>>;
   GEOPOS: KeyCommand<string, Array<[number, number]>>;
 
+  /**
+   * Returns the distance between two members of a geospatial index.
+   */
   geodist: KeyCommand<string, string>;
   GEODIST: KeyCommand<string, string>;
 
+  /**
+   * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point.
+   */
   georadius: KeyCommand<string | number, Array<string | [string, string | [string, string]]>>;
   GEORADIUS: KeyCommand<string | number, Array<string | [string, string | [string, string]]>>;
 
+  /**
+   * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member.
+   */
   georadiusbymember: KeyCommand<string | number, Array<string | [string, string | [string, string]]>>;
   GEORADIUSBYMEMBER: KeyCommand<string | number, Array<string | [string, string | [string, string]]>>;
 
+  /**
+   * Get the value of a key.
+   */
   get(key: string): Promise<string>;
   GET(key: string): Promise<string>;
 
+  /**
+   * Returns the bit value at offset in the string value stored at key.
+   */
   getbit(key: string, offset: number): Promise<number>;
   GETBIT(key: string, offset: number): Promise<number>;
 
+  /**
+   * Get a substring of the string stored at a key.
+   */
   getrange(key: string, start: number, end: number): Promise<string>;
   GETRANGE(key: string, start: number, end: number): Promise<string>;
 
+  /**
+   * Set the string value of a key and return its old value.
+   */
   getset(key: string, value: string): Promise<string>;
   GETSET(key: string, value: string): Promise<string>;
 
+  /**
+   * Delete on or more hash fields.
+   */
   hdel: KeyCommand<string, number>;
   HDEL: KeyCommand<string, number>;
 
+  /**
+   * Determine if a hash field exists.
+   */
   hexists(key: string, field: string): Promise<number>;
   HEXISTS(key: string, field: string): Promise<number>;
 
+  /**
+   * Get the value of a hash field.
+   */
   hget(key: string, field: string): Promise<string>;
   HGET(key: string, field: string): Promise<string>;
 
+  /**
+   * Get all fields and values in a hash.
+   */
   hgetall(key: string): Promise<{ [key: string]: string }>;
   HGETALL(key: string): Promise<{ [key: string]: string }>;
 
+  /**
+   * Increment the integer value of a hash field by the given number.
+   */
   hincrby(key: string, field: string, incr: number): Promise<number>;
   HINCRBY(key: string, field: string, incr: number): Promise<number>;
 
+  /**
+   * Increment the float value of a hash field by the given amount.
+   */
   hincrbyfloat(key: string, field: string, incr: number): Promise<number>;
   HINCRBYFLOAT(key: string, field: string, incr: number): Promise<number>;
 
+  /**
+   * Get all the fields of a hash.
+   */
   hkeys(key: string): Promise<string[]>;
   HKEYS(key: string): Promise<string[]>;
 
+  /**
+   * Get the number of fields in a hash.
+   */
   hlen(key: string): Promise<number>;
   HLEN(key: string): Promise<number>;
 
+  /**
+   * Get the values of all the given hash fields.
+   */
   hmget: KeyCommand<string, string[]>;
   HMGET: KeyCommand<string, string[]>;
 
+  /**
+   * Set the string value of a hash field.
+   */
   hset(key: string, field: string, value: string): Promise<number>;
   HSET(key: string, field: string, value: string): Promise<number>;
 
+  /**
+   * Set the value of a hash field, only if the field does not exist.
+   */
   hsetnx(key: string, field: string, value: string): Promise<number>;
   HSETNX(key: string, field: string, value: string): Promise<number>;
 
+  /**
+   * Get the length of the value of a hash field.
+   */
   hstrlen(key: string, field: string): Promise<number>;
   HSTRLEN(key: string, field: string): Promise<number>;
 
+  /**
+   * Get all the values of a hash.
+   */
   hvals(key: string): Promise<string[]>;
   HVALS(key: string): Promise<string[]>;
 
+  /**
+   * Increment the integer value of a key by one.
+   */
   incr(key: string): Promise<string[]>;
   INCR(key: string): Promise<string[]>;
 
+  /**
+   * Increment the integer value of a key by the given amount.
+   */
   incrby(key: string, increment: number): Promise<number>;
   INCRBY(key: string, increment: number): Promise<number>;
 
+  /**
+   * Increment the float value of a key by the given amount.
+   */
   incrbyfloat(key: string, increment: number): Promise<number>;
   INCRBYFLOAT(key: string, increment: number): Promise<number>;
 
+  /**
+   * Find all keys matching the given pattern.
+   */
   keys(pattern: string): Promise<string[]>;
   KEYS(pattern: string): Promise<string[]>;
 
+  /**
+   * Get the UNIX time stamp of the last successful save to disk.
+   */
   lastsave(): Promise<number>;
   LASTSAVE(): Promise<number>;
 
