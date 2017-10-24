@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/appellation/p-redis.git"
+    "url": "git+https://github.com/appellation/redis-p.git"
   },
   "author": "Will Nelson <nelson.will@live.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/appellation/p-redis/issues"
+    "url": "https://github.com/appellation/redis-p/issues"
   },
-  "homepage": "https://github.com/appellation/p-redis#readme",
+  "homepage": "https://github.com/appellation/redis-p#readme",
   "dependencies": {
     "redis": "^2.8.0",
     "tsubaki": "^1.2.0"
