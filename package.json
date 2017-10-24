@@ -1,6 +1,6 @@
 {
   "name": "redis-p",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Promisified Redis.",
   "main": "src/index.js",
   "types": "src/index.d.ts",
