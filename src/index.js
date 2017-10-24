@@ -29,7 +29,7 @@ const ignore = [
 ];
 
 function promisifyAll(obj) {
-  for (const k of Object.keys(obj)) if (typeof obj[k] === 'function' && !ignore.includes(k)) obj[k] = promisify(obj[k]);
+  for (const k of Object.keys(obj).filter(k => !ignore.includes(k))) if (typeof obj[k] === 'function') obj[k] = promisify(obj[k]);
 }
 
 promisifyAll(redis.RedisClient.prototype);
