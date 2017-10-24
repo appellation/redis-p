@@ -4,14 +4,14 @@
 import { EventEmitter } from 'events';
 import { Duplex } from 'stream';
 
-export interface PromiseetryStrategyOptions {
+export interface RetryStrategyOptions {
   error: NodeJS.ErrnoException;
   total_retry_time: number;
   times_connected: number;
   attempt: number;
 }
 
-export type PromiseetryStrategy = (options: PromiseetryStrategyOptions) => number | Error;
+export type RetryStrategy = (options: RetryStrategyOptions) => number | Error;
 
 export interface ClientOpts {
   host?: string;
@@ -36,7 +36,7 @@ export interface ClientOpts {
   rename_commands?: { [command: string]: string };
   tls?: any;
   prefix?: string;
-  retry_strategy?: PromiseetryStrategy;
+  retry_strategy?: RetryStrategyOptions;
 }
 
 export type Callback<T> = (err: Error | null, reply: T) => void;
