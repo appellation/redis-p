@@ -32,7 +32,7 @@ function promisifyAll(obj) {
   for (const k of Object.keys(obj)) if (typeof obj[k] === 'function' && !ignore.includes(k)) obj[k] = promisify(obj[k]);
 }
 
-promisifyAll(redis.RedisClient.prototype, '');
-promisifyAll(redis.Multi.prototype, '');
+promisifyAll(redis.RedisClient.prototype);
+promisifyAll(redis.Multi.prototype);
 
 module.exports = redis;
