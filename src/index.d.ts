@@ -72,7 +72,7 @@ export interface Commands {
    * Listen for all requests received by the server in real time.
    */
   monitor(): Promise<void>;
-  MONITOPromise(): Promise<void>;
+  MONITOR(): Promise<void>;
 
   /**
    * Get information and statistics about the server.
@@ -1114,11 +1114,11 @@ export interface Commands {
   ZSCAN: KeyCommand<string, [string, string[]]>;
 }
 
-export const PromiseedisClient: {
-  new (options: ClientOpts): PromiseedisClient;
+export const RedisClient: {
+  new (options: ClientOpts): RedisClient;
 };
 
-export interface PromiseedisClient extends Commands, EventEmitter {
+export interface RedisClient extends Commands, EventEmitter {
   connected: boolean;
   command_queue_length: number;
   offline_queue_length: number;
@@ -1146,7 +1146,7 @@ export interface PromiseedisClient extends Commands, EventEmitter {
   cork(): void;
   uncork(): void;
 
-  duplicate(options?: ClientOpts): PromiseedisClient;
+  duplicate(options?: ClientOpts): RedisClient;
 
   sendCommand(command: string): Promise<any>;
   sendCommand(command: string, args?: any[]): Promise<any>;
@@ -1177,9 +1177,9 @@ export interface Multi extends Commands {
 
 export let debug_mode: boolean;
 
-export function createClient(port: number, host?: string, options?: ClientOpts): PromiseedisClient;
-export function createClient(unix_socket: string, options?: ClientOpts): PromiseedisClient;
-export function createClient(redis_url: string, options?: ClientOpts): PromiseedisClient;
-export function createClient(options?: ClientOpts): PromiseedisClient;
+export function createClient(port: number, host?: string, options?: ClientOpts): RedisClient;
+export function createClient(unix_socket: string, options?: ClientOpts): RedisClient;
+export function createClient(redis_url: string, options?: ClientOpts): RedisClient;
+export function createClient(options?: ClientOpts): RedisClient;
 
 export function print(err: Error | undefined, reply: any): void;
