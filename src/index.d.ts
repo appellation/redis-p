@@ -49,6 +49,27 @@ export interface ServerInfo {
   versions: number[];
 }
 
+export interface Command<T, U, R = Promise<U>> {
+  (...args: T[]): R;
+}
+
+export interface KeyCommand<T, U, R = Promise<U>> {
+  (key: string, ...args: T[]): R;
+}
+
+export interface SetCommand<T, U, R = Promise<U>> {
+  (key: string, obj: { [key: string]: T }): R;
+  (key: string, ...args: T[]): R;
+}
+
+export interface ListCommand<T, U, R = Promise<U>> {
+  (arg1: T, ...args: T[]): R;
+}
+
+export interface LastCommand<T1, T2, U, R = Promise<U>> {
+  (...args: Array<T1 | T2>): R;
+}
+
 export const RedisClient: {
   new (options: ClientOpts): RedisClient;
 };

@@ -1,33 +1,34 @@
-import { Multi } from './';
+import { this, Command, SetCommand, ListCommand, LastCommand, KeyCommand } from './';
+
 
 export default interface Commands {
   /**
    * Listen for all requests received by the server in real time.
    */
-  monitor(): Multi;
-  MONITOR(): Multi;
+  monitor(): this;
+  MONITOR(): this;
 
   /**
    * Get information and statistics about the server.
    */
-  info(section?: string | string[]): Multi;
-  INFO(section?: string | string[]): Multi;
+  info(section?: string | string[]): this;
+  INFO(section?: string | string[]): this;
 
   /**
    * Ping the server.
    */
-  ping(message?: string): Multi;
+  ping(message?: string): this;
 
   /**
    * Post a message to a channel.
    */
-  publish(channel: string, value: string): Multi;
+  publish(channel: string, value: string): this;
 
   /**
    * Authenticate to the server.
    */
-  auth(password: string): Multi;
-  AUTH(password: string): Multi;
+  auth(password: string): this;
+  AUTH(password: string): this;
 
   /**
    * KILL - Kill the connection of a client.
@@ -37,104 +38,104 @@ export default interface Commands {
    * REPLY - Instruct the server whether to reply to commands.
    * SETNAME - Set the current connection name.
    */
-  client: Multi;
-  CLIENT: Multi;
+  client: Command<string, any, this>;
+  CLIENT: Command<string, any, this>;
 
   /**
    * Set multiple hash fields to multiple values.
    */
-  hmset: Multi;
-  HMSET: Multi;
+  hmset: SetCommand<string | number, string, this>;
+  HMSET: SetCommand<string | number, string, this>;
 
   /**
    * Listen for messages published to the given channels.
    */
-  subscribe: Multi;
-  SUBSCRIBE: Multi;
+  subscribe: ListCommand<string, string, this>;
+  SUBSCRIBE: ListCommand<string, string, this>;
 
   /**
    * Stop listening for messages posted to the given channels.
    */
-  unsubscribe: Multi;
-  UNSUBSCRIBE: Multi;
+  unsubscribe: ListCommand<string, string, this>;
+  UNSUBSCRIBE: ListCommand<string, string, this>;
 
   /**
    * Listen for messages published to channels matching the given patterns.
    */
-  psubscribe: Multi;
-  PSUBSCRIBE: Multi;
+  psubscribe: ListCommand<string, string, this>;
+  PSUBSCRIBE: ListCommand<string, string, this>;
 
   /**
    * Stop listening for messages posted to channels matching the given patterns.
    */
-  punsubscribe: Multi;
-  PUNSUBSCRIBE: Multi;
+  punsubscribe: ListCommand<string, string, this>;
+  PUNSUBSCRIBE: ListCommand<string, string, this>;
 
   /**
    * Append a value to a key.
    */
-  append(key: string, value: string): Multi;
-  APPEND(key: string, value: string): Multi;
+  append(key: string, value: string): this;
+  APPEND(key: string, value: string): this;
 
   /**
    * Asynchronously rewrite the append-only file.
    */
-  bgwriteaof(): Multi;
-  BGWRITEAOF(): Multi;
+  bgwriteaof(): this;
+  BGWRITEAOF(): this;
 
   /**
    * Asynchronously save the dataset to disk.
    */
-  bgsave(): Multi;
-  BGSAVE(): Multi;
+  bgsave(): this;
+  BGSAVE(): this;
 
   /**
    * Count set bits in a string.
    */
-  bitcount(key: string): Multi;
-  bitcount(key: string, start: number, end: number): Multi;
-  BITCOUNT(key: string): Multi;
-  BITCOUNT(key: string, start: number, end: number): Multi;
+  bitcount(key: string): this;
+  bitcount(key: string, start: number, end: number): this;
+  BITCOUNT(key: string): this;
+  BITCOUNT(key: string, start: number, end: number): this;
 
   /**
    * Perform arbitrary bitfield integer operations on strings.
    */
-  bitfield: Multi;
-  BITFIELD: Multi;
+  bitfield: KeyCommand<string | number, [number, number], this>;
+  BITFIELD: KeyCommand<string | number, [number, number], this>;
 
   /**
    * Perform bitwise operations between strings.
    */
-  bitop(op: string, dest: string, ...args: string[]): Multi;
-  BITOP(op: string, dest: string, ...args: string[]): Multi;
+  bitop(op: string, dest: string, ...args: string[]): this;
+  BITOP(op: string, dest: string, ...args: string[]): this;
 
   /**
    * Find first bit set or clear in a string.
    */
-  bitpos(key: string, bit: number, start: number, end: number): Multi;
-  bitpos(key: string, bit: number, start: number): Multi;
-  bitpos(key: string, bit: number): Multi;
-  BITPOS(key: string, bit: number, start: number, end: number): Multi;
-  BITPOS(key: string, bit: number, start: number): Multi;
-  BITPOS(key: string, bit: number): Multi;
+  bitpos(key: string, bit: number, start: number, end: number): this;
+  bitpos(key: string, bit: number, start: number): this;
+  bitpos(key: string, bit: number): this;
+  BITPOS(key: string, bit: number, start: number, end: number): this;
+  BITPOS(key: string, bit: number, start: number): this;
+  BITPOS(key: string, bit: number): this;
 
   /**
    * Remove and get the first element in a list, or block until one is available.
    */
-  blpop: Multi;
-  BLPOP: Multi;
+  blpop: LastCommand<string, number, [string, string], this>;
+  BLPOP: LastCommand<string, number, [string, string], this>;
 
   /**
    * Remove and get the last element in a list, or block until one is available.
    */
-  brpop: Multi;
-  BRPOP: Multi;
+  brpop: this;
+  BRPOP: this;
 
   /**
    * Pop a value from a list, push it to another list and return it; or block until one is available.
    */
-  brpoplpush(source: string, dest: string, timeout: number): Multi;
-  BRPOPLPUSH(source: string, dest: string, timeout: number): Multi;
+  brpoplpush(source: string, dest: string, timeout: number): this;
+  BRPOPLPUSH(source: string, dest: string, timeout: number): this;
 
   /**
    * ADDSLOTS - Assign new hash slots to receiving node.
@@ -156,8 +157,8 @@ export default interface Commands {
    * SLAVES - List slave nodes of the specified master node.
    * SLOTS - Get array of Cluster slot to node mappings.
    */
-  cluster: Multi;
-  CLUSTER: Multi;
+  cluster: Command<string, any, this>;
+  CLUSTER: Command<string, any, this>;
 
   /**
    * Get array of Redis command details.
@@ -166,8 +167,8 @@ export default interface Commands {
    * GETKEYS - Extract keys given a full Redis command.
    * INFO - Get array of specific REdis command details.
    */
-  command(): Multi;
-  COMMAND(): Multi;
+  command(): this;
+  COMMAND(): this;
 
   /**
    * Get array of Redis command details.
@@ -180,507 +181,507 @@ export default interface Commands {
    * SET - Set a configuration parameter to the given value.
    * RESETSTAT - Reset the stats returned by INFO.
    */
-  config: Multi;
-  CONFIG: Multi;
+  config: Command<string, boolean, this>;
+  CONFIG: Command<string, boolean, this>;
 
   /**
    * Return the number of keys in the selected database.
    */
-  dbsize(): Multi;
-  DBSIZE(): Multi;
+  dbsize(): this;
+  DBSIZE(): this;
 
   /**
    * OBJECT - Get debugging information about a key.
    * SEGFAULT - Make the server crash.
    */
-  debug(): Multi;
-  DEBUG(): Multi;
+  debug(): this;
+  DEBUG(): this;
 
   /**
    * Decrement the integer value of a key by one.
    */
-  decr(key: string): Multi;
-  DECR(key: string): Multi;
+  decr(key: string): this;
+  DECR(key: string): this;
 
   /**
    * Decrement the integer value of a key by the given number.
    */
-  decrby(key: string, dec: number): Multi;
-  DECRBY(key: string, dec: number): Multi;
+  decrby(key: string, dec: number): this;
+  DECRBY(key: string, dec: number): this;
 
   /**
    * Delete a key.
    */
-  del: Multi;
-  DEL: Multi;
+  del: Command<string, number, this>;
+  DEL: Command<string, number, this>;
 
   /**
    * Discard all commands issued after MULTI.
    */
-  discard: Multi;
-  DISCARD: Multi;
+  discard(): Promise<'OK'>;
+  DISCARD(): Promise<'OK'>;
 
   /**
    * Return a serialized version of the value stored at the specified key.
    */
-  dump(key: string): Multi;
-  DUMP(key: string): Multi;
+  dump(key: string): this;
+  DUMP(key: string): this;
 
   /**
    * Echo the given string.
    */
-  Multi;
-  Multi;
+  echo<T extends string>(message: T): this;
+  ECHO<T extends string>(message: T): this;
 
   /**
    * Execute a Lua script server side.
    */
-  eval: Multi;
-  EVAL: Multi;
+  eval: Command<string | number, any, this>;
+  EVAL: Command<string | number, any, this>;
 
   /**
    * Execute a Lue script server side.
    */
-  evalsha: Multi;
-  EVALSHA: Multi;
+  evalsha: Command<string | number, any, this>;
+  EVALSHA: Command<string | number, any, this>;
 
   /**
    * Determine if a key exists.
    */
-  exists: Multi;
-  EXISTS: Multi;
+  exists: Command<string, number, this>;
+  EXISTS: Command<string, number, this>;
 
   /**
    * Set a key's time to live in seconds.
    */
-  expire(key: string, seconds: number): Multi;
-  EXPIRE(key: string, seconds: number): Multi;
+  expire(key: string, seconds: number): this;
+  EXPIRE(key: string, seconds: number): this;
 
   /**
    * Set the expiration for a key as a UNIX timestamp.
    */
-  expireat(key: string, timestamp: number): Multi;
-  EXPIREAT(key: string, timestamp: number): Multi;
+  expireat(key: string, timestamp: number): this;
+  EXPIREAT(key: string, timestamp: number): this;
 
   /**
    * Remove all keys from all databases.
    */
-  flushall(): Multi;
-  FLUSHALL(): Multi;
+  flushall(): this;
+  FLUSHALL(): this;
 
   /**
    * Remove all keys from the current database.
    */
-  flushdb(): Multi;
-  FLUSHDB(): Multi;
+  flushdb(): this;
+  FLUSHDB(): this;
 
   /**
    * Add one or more geospatial items in the geospatial index represented using a sorted set.
    */
-  geoadd: Multi;
-  GEOADD: Multi;
+  geoadd: KeyCommand<string | number, number, this>;
+  GEOADD: KeyCommand<string | number, number, this>;
 
   /**
    * Returns members of a geospatial index as standard geohash strings.
    */
-  geohash: Multi;
-  GEOHASH: Multi;
+  geohash: KeyCommand<string, number, this>;
+  GEOHASH: KeyCommand<string, number, this>;
 
   /**
    * Returns longitude and latitude of members of a geospatial index.
    */
-  geopos: Multi;
-  GEOPOS: Multi;
+  geopos: KeyCommand<string, Array<[number, number]>, this>;
+  GEOPOS: KeyCommand<string, Array<[number, number]>, this>;
 
   /**
    * Returns the distance between two members of a geospatial index.
    */
-  geodist: Multi;
-  GEODIST: Multi;
+  geodist: KeyCommand<string, string, this>;
+  GEODIST: KeyCommand<string, string, this>;
 
   /**
    * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point.
    */
-  georadius: Multi;
-  GEORADIUS: Multi;
+  georadius: KeyCommand<string | number, Array<string | [string, string | [string, string]]>, this>;
+  GEORADIUS: KeyCommand<string | number, Array<string | [string, string | [string, string]]>, this>;
 
   /**
    * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member.
    */
-  georadiusbymember: Multi;
-  GEORADIUSBYMEMBER: Multi;
+  georadiusbymember: KeyCommand<string | number, Array<string | [string, string | [string, string]]>, this>;
+  GEORADIUSBYMEMBER: KeyCommand<string | number, Array<string | [string, string | [string, string]]>, this>;
 
   /**
    * Get the value of a key.
    */
-  get(key: string): Multi;
-  GET(key: string): Multi;
+  get(key: string): this;
+  GET(key: string): this;
 
   /**
    * Returns the bit value at offset in the string value stored at key.
    */
-  getbit(key: string, offset: number): Multi;
-  GETBIT(key: string, offset: number): Multi;
+  getbit(key: string, offset: number): this;
+  GETBIT(key: string, offset: number): this;
 
   /**
    * Get a substring of the string stored at a key.
    */
-  getrange(key: string, start: number, end: number): Multi;
-  GETRANGE(key: string, start: number, end: number): Multi;
+  getrange(key: string, start: number, end: number): this;
+  GETRANGE(key: string, start: number, end: number): this;
 
   /**
    * Set the string value of a key and return its old value.
    */
-  getset(key: string, value: string): Multi;
-  GETSET(key: string, value: string): Multi;
+  getset(key: string, value: string): this;
+  GETSET(key: string, value: string): this;
 
   /**
    * Delete on or more hash fields.
    */
-  hdel: Multi;
-  HDEL: Multi;
+  hdel: KeyCommand<string, number, this>;
+  HDEL: KeyCommand<string, number, this>;
 
   /**
    * Determine if a hash field exists.
    */
-  hexists(key: string, field: string): Multi;
-  HEXISTS(key: string, field: string): Multi;
+  hexists(key: string, field: string): this;
+  HEXISTS(key: string, field: string): this;
 
   /**
    * Get the value of a hash field.
    */
-  hget(key: string, field: string): Multi;
-  HGET(key: string, field: string): Multi;
+  hget(key: string, field: string): this;
+  HGET(key: string, field: string): this;
 
   /**
    * Get all fields and values in a hash.
    */
-  hgetall(key: string): Multi;
-  HGETALL(key: string): Multi;
+  hgetall(key: string): this;
+  HGETALL(key: string): this;
 
   /**
    * Increment the integer value of a hash field by the given number.
    */
-  hincrby(key: string, field: string, incr: number): Multi;
-  HINCRBY(key: string, field: string, incr: number): Multi;
+  hincrby(key: string, field: string, incr: number): this;
+  HINCRBY(key: string, field: string, incr: number): this;
 
   /**
    * Increment the float value of a hash field by the given amount.
    */
-  hincrbyfloat(key: string, field: string, incr: number): Multi;
-  HINCRBYFLOAT(key: string, field: string, incr: number): Multi;
+  hincrbyfloat(key: string, field: string, incr: number): this;
+  HINCRBYFLOAT(key: string, field: string, incr: number): this;
 
   /**
    * Get all the fields of a hash.
    */
-  hkeys(key: string): Multi;
-  HKEYS(key: string): Multi;
+  hkeys(key: string): this;
+  HKEYS(key: string): this;
 
   /**
    * Get the number of fields in a hash.
    */
-  hlen(key: string): Multi;
-  HLEN(key: string): Multi;
+  hlen(key: string): this;
+  HLEN(key: string): this;
 
   /**
    * Get the values of all the given hash fields.
    */
-  hmget: Multi;
-  HMGET: Multi;
+  hmget: KeyCommand<string, string[], this>;
+  HMGET: KeyCommand<string, string[], this>;
 
   /**
    * Set the string value of a hash field.
    */
-  hset(key: string, field: string, value: string): Multi;
-  HSET(key: string, field: string, value: string): Multi;
+  hset(key: string, field: string, value: string): this;
+  HSET(key: string, field: string, value: string): this;
 
   /**
    * Set the value of a hash field, only if the field does not exist.
    */
-  hsetnx(key: string, field: string, value: string): Multi;
-  HSETNX(key: string, field: string, value: string): Multi;
+  hsetnx(key: string, field: string, value: string): this;
+  HSETNX(key: string, field: string, value: string): this;
 
   /**
    * Get the length of the value of a hash field.
    */
-  hstrlen(key: string, field: string): Multi;
-  HSTRLEN(key: string, field: string): Multi;
+  hstrlen(key: string, field: string): this;
+  HSTRLEN(key: string, field: string): this;
 
   /**
    * Get all the values of a hash.
    */
-  hvals(key: string): Multi;
-  HVALS(key: string): Multi;
+  hvals(key: string): this;
+  HVALS(key: string): this;
 
   /**
    * Increment the integer value of a key by one.
    */
-  incr(key: string): Multi;
-  INCR(key: string): Multi;
+  incr(key: string): this;
+  INCR(key: string): this;
 
   /**
    * Increment the integer value of a key by the given amount.
    */
-  incrby(key: string, increment: number): Multi;
-  INCRBY(key: string, increment: number): Multi;
+  incrby(key: string, increment: number): this;
+  INCRBY(key: string, increment: number): this;
 
   /**
    * Increment the float value of a key by the given amount.
    */
-  incrbyfloat(key: string, increment: number): Multi;
-  INCRBYFLOAT(key: string, increment: number): Multi;
+  incrbyfloat(key: string, increment: number): this;
+  INCRBYFLOAT(key: string, increment: number): this;
 
   /**
    * Find all keys matching the given pattern.
    */
-  keys(pattern: string): Multi;
-  KEYS(pattern: string): Multi;
+  keys(pattern: string): this;
+  KEYS(pattern: string): this;
 
   /**
    * Get the UNIX time stamp of the last successful save to disk.
    */
-  lastsave(): Multi;
-  LASTSAVE(): Multi;
+  lastsave(): this;
+  LASTSAVE(): this;
 
   /**
    * Get an element from a list by its index.
    */
-  lindex(key: string, index: number): Multi;
-  LINDEX(key: string, index: number): Multi;
+  lindex(key: string, index: number): this;
+  LINDEX(key: string, index: number): this;
 
   /**
    * Insert an element before or after another element in a list.
    */
-  linsert(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string): Multi;
-  LINSERT(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string): Multi;
+  linsert(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string): this;
+  LINSERT(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string): this;
 
   /**
    * Get the length of a list.
    */
-  llen(key: string): Multi;
-  LLEN(key: string): Multi;
+  llen(key: string): this;
+  LLEN(key: string): this;
 
   /**
    * Remove and get the first element in a list.
    */
-  lpop(key: string): Multi;
-  LPOP(key: string): Multi;
+  lpop(key: string): this;
+  LPOP(key: string): this;
 
   /**
    * Prepend one or multiple values to a list.
    */
-  lpush: Multi;
-  LPUSH: Multi;
+  lpush: KeyCommand<string, number, this>;
+  LPUSH: KeyCommand<string, number, this>;
 
   /**
    * Prepend a value to a list, only if the list exists.
    */
-  lpushx(key: string, value: string): Multi;
-  LPUSHX(key: string, value: string): Multi;
+  lpushx(key: string, value: string): this;
+  LPUSHX(key: string, value: string): this;
 
   /**
    * Get a range of elements from a list.
    */
-  lrange(key: string, start: number, stop: number): Multi;
-  LRANGE(key: string, start: number, stop: number): Multi;
+  lrange(key: string, start: number, stop: number): this;
+  LRANGE(key: string, start: number, stop: number): this;
 
   /**
    * Remove elements from a list.
    */
-  lrem(key: string, count: number, value: string): Multi;
-  LREM(key: string, count: number, value: string): Multi;
+  lrem(key: string, count: number, value: string): this;
+  LREM(key: string, count: number, value: string): this;
 
   /**
    * Set the value of an element in a list by its index.
    */
-  lset(key: string, index: number, value: string): Multi;
-  LSET(key: string, index: number, value: string): Multi;
+  lset(key: string, index: number, value: string): this;
+  LSET(key: string, index: number, value: string): this;
 
   /**
    * Trim a list to the specified range.
    */
-  ltrim(key: string, start: number, stop: number): Multi;
-  LTRIM(key: string, start: number, stop: number): Multi;
+  ltrim(key: string, start: number, stop: number): this;
+  LTRIM(key: string, start: number, stop: number): this;
 
   /**
    * Get the values of all given keys.
    */
-  mget: Multi;
-  MGET: Multi;
+  mget: Command<string, string[], this>;
+  MGET: Command<string, string[], this>;
 
   /**
    * Atomically tranfer a key from a Redis instance to another one.
    */
-  migrate: Multi;
-  MIGRATE: Multi;
+  migrate: Command<string, boolean, this>;
+  MIGRATE: Command<string, boolean, this>;
 
   /**
    * Move a key to another database.
    */
-  move(key: string, db: string | number): Multi;
-  MOVE(key: string, db: string | number): Multi;
+  move(key: string, db: string | number): this;
+  MOVE(key: string, db: string | number): this;
 
   /**
    * Set multiple keys to multiple values.
    */
-  mset: Multi;
-  MSET: Multi;
+  mset: Command<string, boolean, this>;
+  MSET: Command<string, boolean, this>;
 
   /**
    * Set multiple keys to multiple values, only if none of the keys exist.
    */
-  msetnx: Multi;
-  MSETNX: Multi;
+  msetnx: Command<string, boolean, this>;
+  MSETNX: Command<string, boolean, this>;
 
   /**
    * Inspect the internals of Redis objects.
    */
-  object: Multi;
-  OBJECT: Multi;
+  object: Command<string, any, this>;
+  OBJECT: Command<string, any, this>;
 
   /**
    * Remove the expiration from a key.
    */
-  persist(key: string): Multi;
-  PERSIST(key: string): Multi;
+  persist(key: string): this;
+  PERSIST(key: string): this;
 
   /**
    * Remove a key's time to live in milliseconds.
    */
-  pexpire(key: string, milliseconds: number): Multi;
-  PEXPIRE(key: string, milliseconds: number): Multi;
+  pexpire(key: string, milliseconds: number): this;
+  PEXPIRE(key: string, milliseconds: number): this;
 
   /**
    * Set the expiration for a key as a UNIX timestamp specified in milliseconds.
    */
-  pexpireat(key: string, millisecondsTimestamp: number): Multi;
-  PEXPIREAT(key: string, millisecondsTimestamp: number): Multi;
+  pexpireat(key: string, millisecondsTimestamp: number): this;
+  PEXPIREAT(key: string, millisecondsTimestamp: number): this;
 
   /**
    * Adds the specified elements to the specified HyperLogLog.
    */
-  pfadd: Multi;
-  PFADD: Multi;
+  pfadd: KeyCommand<string, number, this>;
+  PFADD: KeyCommand<string, number, this>;
 
   /**
    * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
    */
-  pfcount: Multi;
-  PFCOUNT: Multi;
+  pfcount: KeyCommand<string, number, this>;
+  PFCOUNT: KeyCommand<string, number, this>;
 
   /**
    * Merge N different HyperLogLogs into a single one.
    */
-  pfmerge: Multi;
-  PFMERGE: Multi;
+  pfmerge: Command<string, boolean, this>;
+  PFMERGE: Command<string, boolean, this>;
 
   /**
    * Set the value and expiration in milliseconds of a key.
    */
-  psetex(key: string, milliseconds: number, value: string): Multi;
-  PSETEX(key: string, milliseconds: number, value: string): Multi;
+  psetex(key: string, milliseconds: number, value: string): this;
+  PSETEX(key: string, milliseconds: number, value: string): this;
 
   /**
    * Inspect the state of the Pub/Sub subsytem.
    */
-  pubsub: Multi;
-  PUBSUB: Multi;
+  pubsub: Command<string, number, this>;
+  PUBSUB: Command<string, number, this>;
 
   /**
    * Get the time to live for a key in milliseconds.
    */
-  pttl(key: string): Multi;
-  PTTL(key: string): Multi;
+  pttl(key: string): this;
+  PTTL(key: string): this;
 
   /**
    * Close the connection.
    */
-  quit(): Multi;
-  QUIT(): Multi;
+  quit(): this;
+  QUIT(): this;
 
   /**
    * Return a random key from the keyspace.
    */
-  randomkey(): Multi;
-  RANDOMKEY(): Multi;
+  randomkey(): this;
+  RANDOMKEY(): this;
 
   /**
    * Enables read queries for a connection to a cluster slave node.
    */
-  readonly(): Multi;
-  READONLY(): Multi;
+  readonly(): this;
+  READONLY(): this;
 
   /**
    * Disables read queries for a connection to cluster slave node.
    */
-  readwrite(): Multi;
-  READWRITE(): Multi;
+  readwrite(): this;
+  READWRITE(): this;
 
   /**
    * Rename a key.
    */
-  rename(key: string, newkey: string): Multi;
-  RENAME(key: string, newkey: string): Multi;
+  rename(key: string, newkey: string): this;
+  RENAME(key: string, newkey: string): this;
 
   /**
    * Rename a key, only if the new key does not exist.
    */
-  renamenx(key: string, newkey: string): Multi;
-  RENAMENX(key: string, newkey: string): Multi;
+  renamenx(key: string, newkey: string): this;
+  RENAMENX(key: string, newkey: string): this;
 
   /**
    * Create a key using the provided serialized value, previously obtained using DUMP.
    */
-  restore(key: string, ttl: number, serializedValue: string): Multi;
-  RESTORE(key: string, ttl: number, serializedValue: string): Multi;
+  restore(key: string, ttl: number, serializedValue: string): this;
+  RESTORE(key: string, ttl: number, serializedValue: string): this;
 
   /**
    * Return the role of the instance in the context of replication.
    */
-  role(): Multi;
-  ROLE(): Multi;
+  role(): this;
+  ROLE(): this;
 
   /**
    * Remove and get the last element in a list.
    */
-  rpop(key: string): Multi;
-  RPOP(key: string): Multi;
+  rpop(key: string): this;
+  RPOP(key: string): this;
 
   /**
    * Remove the last element in a list, prepend it to another list and return it.
    */
-  rpoplpush(source: string, destination: string): Multi;
-  RPOPLPUSH(source: string, destination: string): Multi;
+  rpoplpush(source: string, destination: string): this;
+  RPOPLPUSH(source: string, destination: string): this;
 
   /**
    * Append one or multiple values to a list.
    */
-  rpush: Multi;
-  RPUSH: Multi;
+  rpush: KeyCommand<string, number, this>;
+  RPUSH: KeyCommand<string, number, this>;
 
   /**
    * Append a value to a list, only if the list exists.
    */
-  rpushx(key: string, value: string): Multi;
-  RPUSHX(key: string, value: string): Multi;
+  rpushx(key: string, value: string): this;
+  RPUSHX(key: string, value: string): this;
 
   /**
    * Append one or multiple members to a set.
    */
-  sadd: Multi;
-  SADD: Multi;
+  sadd: KeyCommand<string, number, this>;
+  SADD: KeyCommand<string, number, this>;
 
   /**
    * Synchronously save the dataset to disk.
    */
-  save(): Multi;
-  SAVE(): Multi;
+  save(): this;
+  SAVE(): this;
 
   /**
    * Get the number of members in a set.
    */
-  scard(key: string): Multi;
-  SCARD(key: string): Multi;
+  scard(key: string): this;
+  SCARD(key: string): this;
 
   /**
    * DEBUG - Set the debug mode for executed scripts.
@@ -689,360 +690,360 @@ export default interface Commands {
    * KILL - Kill the script currently in execution.
    * LOAD - Load the specified Lua script into the script cache.
    */
-  script: Multi;
-  SCRIPT: Multi;
+  script: Command<string, any, this>;
+  SCRIPT: Command<string, any, this>;
 
   /**
    * Subtract multiple sets.
    */
-  sdiff: Multi;
-  SDIFF: Multi;
+  sdiff: Command<string, string[], this>;
+  SDIFF: Command<string, string[], this>;
 
   /**
    * Subtract multiple sets and store the resulting set in a key.
    */
-  sdiffstore: Multi;
-  SDIFFSTORE: Multi;
+  sdiffstore: KeyCommand<string, number, this>;
+  SDIFFSTORE: KeyCommand<string, number, this>;
 
   /**
    * Change the selected database for the current connection.
    */
-  select(index: number | string): Multi;
-  SELECT(index: number | string): Multi;
+  select(index: number | string): this;
+  SELECT(index: number | string): this;
 
   /**
    * Set the string value of a key.
    */
-  set(key: string, value: string): Multi;
-  set(key: string, value: string, flag: string): Multi;
-  set(key: string, value: string, mode: string, duration: number): Multi;
-  set(key: string, value: string, mode: string, duration: number, flag: string): Multi;
-  SET(key: string, value: string): Multi;
-  SET(key: string, value: string, flag: string): Multi;
-  SET(key: string, value: string, mode: string, duration: number): Multi;
-  SET(key: string, value: string, mode: string, duration: number, flag: string): Multi;
+  set(key: string, value: string): this;
+  set(key: string, value: string, flag: string): this;
+  set(key: string, value: string, mode: string, duration: number): this;
+  set(key: string, value: string, mode: string, duration: number, flag: string): this;
+  SET(key: string, value: string): this;
+  SET(key: string, value: string, flag: string): this;
+  SET(key: string, value: string, mode: string, duration: number): this;
+  SET(key: string, value: string, mode: string, duration: number, flag: string): this;
 
   /**
    * Sets or clears the bit at offset in the string value stored at key.
    */
-  setbit(key: string, offset: number, value: string): Multi;
-  SETBIT(key: string, offset: number, value: string): Multi;
+  setbit(key: string, offset: number, value: string): this;
+  SETBIT(key: string, offset: number, value: string): this;
 
   /**
    * Set the value and expiration of a key.
    */
-  setex(key: string, seconds: number, value: string): Multi;
-  SETEX(key: string, seconds: number, value: string): Multi;
+  setex(key: string, seconds: number, value: string): this;
+  SETEX(key: string, seconds: number, value: string): this;
 
   /**
    * Set the value of a key, only if the key does not exist.
    */
-  setnx(key: string, value: string): Multi;
-  SETNX(key: string, value: string): Multi;
+  setnx(key: string, value: string): this;
+  SETNX(key: string, value: string): this;
 
   /**
    * Overwrite part of a string at key starting at the specified offset.
    */
-  setrange(key: string, offset: number, value: string): Multi;
-  SETRANGE(key: string, offset: number, value: string): Multi;
+  setrange(key: string, offset: number, value: string): this;
+  SETRANGE(key: string, offset: number, value: string): this;
 
   /**
    * Synchronously save the dataset to disk and then shut down the server.
    */
-  shutdown: Multi;
-  SHUTDOWN: Multi;
+  shutdown: Command<string, string, this>;
+  SHUTDOWN: Command<string, string, this>;
 
   /**
    * Intersect multiple sets.
    */
-  sinter: Multi;
-  SINTER: Multi;
+  sinter: KeyCommand<string, string[], this>;
+  SINTER: KeyCommand<string, string[], this>;
 
   /**
    * Intersect multiple sets and store the resulting set in a key.
    */
-  sinterstore: Multi;
-  SINTERSTORE: Multi;
+  sinterstore: Command<string, number, this>;
+  SINTERSTORE: Command<string, number, this>;
 
   /**
    * Determine if a given value is a member of a set.
    */
-  sismember(key: string, member: string): Multi;
-  SISMEMBER(key: string, member: string): Multi;
+  sismember(key: string, member: string): this;
+  SISMEMBER(key: string, member: string): this;
 
   /**
    * Make the server a slave of another instance, or promote it as master.
    */
-  slaveof(host: string, port: string | number): Multi;
-  SLAVEOF(host: string, port: string | number): Multi;
+  slaveof(host: string, port: string | number): this;
+  SLAVEOF(host: string, port: string | number): this;
 
   /**
    * Manages the Redis slow queries log.
    */
-  slowlog: Multi;
-  SLOWLOG: Multi;
+  slowlog: Command<string, Array<[number, number, number, string[]]>, this>;
+  SLOWLOG: Command<string, Array<[number, number, number, string[]]>, this>;
 
   /**
    * Get all the members in a set.
    */
-  smembers(key: string): Multi;
-  SMEMBERS(key: string): Multi;
+  smembers(key: string): this;
+  SMEMBERS(key: string): this;
 
   /**
    * Move a member from one set to another.
    */
-  smove(source: string, destination: string, member: string): Multi;
-  SMOVE(source: string, destination: string, member: string): Multi;
+  smove(source: string, destination: string, member: string): this;
+  SMOVE(source: string, destination: string, member: string): this;
 
   /**
    * Sort the elements in a list, set or sorted set.
    */
-  sort: Multi;
-  SORT: Multi;
+  sort: Command<string, string[], this>;
+  SORT: Command<string, string[], this>;
 
   /**
    * Remove and return one or multiple random members from a set.
    */
-  spop(key: string): Multi;
-  spop(key: string, count: number): Multi;
-  SPOP(key: string): Multi;
-  SPOP(key: string, count: number): Multi;
+  spop(key: string): this;
+  spop(key: string, count: number): this;
+  SPOP(key: string): this;
+  SPOP(key: string, count: number): this;
 
   /**
    * Get one or multiple random members from a set.
    */
-  srandmember(key: string): Multi;
-  srandmember(key: string, count: number): Multi;
-  SRANDMEMBER(key: string): Multi;
-  SRANDMEMBER(key: string, count: number): Multi;
+  srandmember(key: string): this;
+  srandmember(key: string, count: number): this;
+  SRANDMEMBER(key: string): this;
+  SRANDMEMBER(key: string, count: number): this;
 
   /**
    * Remove one or more members from a set.
    */
-  srem: Multi;
-  SREM: Multi;
+  srem: KeyCommand<string, number, this>;
+  SREM: KeyCommand<string, number, this>;
 
   /**
    * Get the length of the value stored in a key.
    */
-  strlen(key: string): Multi;
-  STRLEN(key: string): Multi;
+  strlen(key: string): this;
+  STRLEN(key: string): this;
 
   /**
    * Add multiple sets.
    */
-  sunion: Multi;
-  SUNION: Multi;
+  sunion: Command<string, string[], this>;
+  SUNION: Command<string, string[], this>;
 
   /**
    * Add multiple sets and store the resulting set in a key.
    */
-  sunionstore: Multi;
-  SUNIONSTORE: Multi;
+  sunionstore: Command<string, number, this>;
+  SUNIONSTORE: Command<string, number, this>;
 
   /**
    * Internal command used for replication.
    */
-  sync(): Multi;
-  SYNC(): Multi;
+  sync(): this;
+  SYNC(): this;
 
   /**
    * Return the current server time.
    */
-  time(): Multi;
-  TIME(): Multi;
+  time(): this;
+  TIME(): this;
 
   /**
    * Get the time to live for a key.
    */
-  ttl(key: string): Multi;
-  TTL(key: string): Multi;
+  ttl(key: string): this;
+  TTL(key: string): this;
 
   /**
    * Determine the type stored at key.
    */
-  type(key: string): Multi;
-  TYPE(key: string): Multi;
+  type(key: string): this;
+  TYPE(key: string): this;
 
   /**
    * Forget about all watched keys.
    */
-  unwatch(): Multi;
-  UNWATCH(): Multi;
+  unwatch(): this;
+  UNWATCH(): this;
 
   /**
    * Wait for the synchronous replication of all the write commands sent in the context of the current connection.
    */
-  wait(numslaves: number, timeout: number): Multi;
-  WAIT(numslaves: number, timeout: number): Multi;
+  wait(numslaves: number, timeout: number): this;
+  WAIT(numslaves: number, timeout: number): this;
 
   /**
    * Watch the given keys to determine execution of the MULTI/EXEC block.
    */
-  watch: Multi;
-  WATCH: Multi;
+  watch: Command<string, 'OK', this>;
+  WATCH: Command<string, 'OK', this>;
 
   /**
    * Add one or more members to a sorted set, or update its score if it already exists.
    */
-  zadd: Multi;
-  ZADD: Multi;
+  zadd: KeyCommand<string | number, number, this>;
+  ZADD: KeyCommand<string | number, number, this>;
 
   /**
    * Get the number of members in a sorted set.
    */
-  zcard(key: string): Multi;
-  ZCARD(key: string): Multi;
+  zcard(key: string): this;
+  ZCARD(key: string): this;
 
   /**
    * Count the members in a sorted set with scores between the given values.
    */
-  zcount(key: string, min: number | string, max: number | string): Multi;
-  ZCOUNT(key: string, min: number | string, max: number | string): Multi;
+  zcount(key: string, min: number | string, max: number | string): this;
+  ZCOUNT(key: string, min: number | string, max: number | string): this;
 
   /**
    * Increment the score of a member in a sorted set.
    */
-  zincrby(key: string, increment: number, member: string): Multi;
-  ZINCRBY(key: string, increment: number, member: string): Multi;
+  zincrby(key: string, increment: number, member: string): this;
+  ZINCRBY(key: string, increment: number, member: string): this;
 
   /**
    * Intersect multiple sorted sets and store the resulting sorted set in a new key.
    */
-  zinterstore: Multi;
-  ZINTERSTORE: Multi;
+  zinterstore: Command<string | number, number, this>;
+  ZINTERSTORE: Command<string | number, number, this>;
 
   /**
    * Count the number of members in a sorted set between a given lexicographic range.
    */
-  zlexcount(key: string, min: string, max: string): Multi;
-  ZLEXCOUNT(key: string, min: string, max: string): Multi;
+  zlexcount(key: string, min: string, max: string): this;
+  ZLEXCOUNT(key: string, min: string, max: string): this;
 
   /**
    * Return a range of members in a sorted set, by index.
    */
-  zrange(key: string, start: number, stop: number): Multi;
-  zrange(key: string, start: number, stop: number, withscores: string): Multi;
-  ZRANGE(key: string, start: number, stop: number): Multi;
-  ZRANGE(key: string, start: number, stop: number, withscores: string): Multi;
+  zrange(key: string, start: number, stop: number): this;
+  zrange(key: string, start: number, stop: number, withscores: string): this;
+  ZRANGE(key: string, start: number, stop: number): this;
+  ZRANGE(key: string, start: number, stop: number, withscores: string): this;
 
   /**
    * Return a range of members in a sorted set, by lexicographical range.
    */
-  zrangebylex(key: string, min: string, max: string): Multi;
-  zrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): Multi;
-  ZRANGEBYLEX(key: string, min: string, max: string): Multi;
-  ZRANGEBYLEX(key: string, min: string, max: string, limit: string, offset: number, count: number): Multi;
+  zrangebylex(key: string, min: string, max: string): this;
+  zrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): this;
+  ZRANGEBYLEX(key: string, min: string, max: string): this;
+  ZRANGEBYLEX(key: string, min: string, max: string, limit: string, offset: number, count: number): this;
 
   /**
    * Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
    */
-  zrevrangebylex(key: string, min: string, max: string): Multi;
-  zrevrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): Multi;
-  ZREVRANGEBYLEX(key: string, min: string, max: string): Multi;
-  ZREVRANGEBYLEX(key: string, min: string, max: string, limit: string, offset: number, count: number): Multi;
+  zrevrangebylex(key: string, min: string, max: string): this;
+  zrevrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): this;
+  ZREVRANGEBYLEX(key: string, min: string, max: string): this;
+  ZREVRANGEBYLEX(key: string, min: string, max: string, limit: string, offset: number, count: number): this;
 
   /**
    * Return a range of members in a sorted set, by score.
    */
-  zrangebyscore(key: string, min: number | string, max: number | string): Multi;
-  zrangebyscore(key: string, min: number | string, max: number | string, withscores: string): Multi;
-  zrangebyscore(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): Multi;
-  zrangebyscore(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number): Multi;
-  ZRANGEBYSCORE(key: string, min: number | string, max: number | string): Multi;
-  ZRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string): Multi;
-  ZRANGEBYSCORE(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): Multi;
-  ZRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number): Multi;
+  zrangebyscore(key: string, min: number | string, max: number | string): this;
+  zrangebyscore(key: string, min: number | string, max: number | string, withscores: string): this;
+  zrangebyscore(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): this;
+  zrangebyscore(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number): this;
+  ZRANGEBYSCORE(key: string, min: number | string, max: number | string): this;
+  ZRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string): this;
+  ZRANGEBYSCORE(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): this;
+  ZRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number): this;
 
   /**
    * Determine the index of a member in a sorted set.
    */
-  zrank(key: string, member: string): Multi;
-  ZRANK(key: string, member: string): Multi;
+  zrank(key: string, member: string): this;
+  ZRANK(key: string, member: string): this;
 
   /**
    * Remove one or more members from a sorted set.
    */
-  zrem: Multi;
-  ZREM: Multi;
+  zrem: KeyCommand<string, number>;
+  ZREM: this;
 
   /**
    * Remove all members in a sorted set between the given lexicographical range.
    */
-  zremrangebylex(key: string, min: string, max: string): Multi;
-  ZREMRANGEBYLEX(key: string, min: string, max: string): Multi;
+  zremrangebylex(key: string, min: string, max: string): this;
+  ZREMRANGEBYLEX(key: string, min: string, max: string): this;
 
   /**
    * Remove all members in a sorted set within the given indexes.
    */
-  zremrangebyrank(key: string, start: number, stop: number): Multi;
-  ZREMRANGEBYRANK(key: string, start: number, stop: number): Multi;
+  zremrangebyrank(key: string, start: number, stop: number): this;
+  ZREMRANGEBYRANK(key: string, start: number, stop: number): this;
 
   /**
    * Remove all members in a sorted set within the given indexes.
    */
-  zremrangebyscore(key: string, min: string | number, max: string | number): Multi;
-  ZREMRANGEBYSCORE(key: string, min: string | number, max: string | number): Multi;
+  zremrangebyscore(key: string, min: string | number, max: string | number): this;
+  ZREMRANGEBYSCORE(key: string, min: string | number, max: string | number): this;
 
   /**
    * Return a range of members in a sorted set, by index, with scores ordered from high to low.
    */
-  zrevrange(key: string, start: number, stop: number): Multi;
-  zrevrange(key: string, start: number, stop: number, withscores: string): Multi;
-  ZREVRANGE(key: string, start: number, stop: number): Multi;
-  ZREVRANGE(key: string, start: number, stop: number, withscores: string): Multi;
+  zrevrange(key: string, start: number, stop: number): this;
+  zrevrange(key: string, start: number, stop: number, withscores: string): this;
+  ZREVRANGE(key: string, start: number, stop: number): this;
+  ZREVRANGE(key: string, start: number, stop: number, withscores: string): this;
 
   /**
    * Return a range of members in a sorted set, by score, with scores ordered from high to low.
    */
-  zrevrangebyscore(key: string, min: number | string, max: number | string): Multi;
-  zrevrangebyscore(key: string, min: number | string, max: number | string, withscores: string): Multi;
-  zrevrangebyscore(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): Multi;
-  zrevrangebyscore(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number): Multi;
-  ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string): Multi;
-  ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string): Multi;
-  ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): Multi;
-  ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number): Multi;
+  zrevrangebyscore(key: string, min: number | string, max: number | string): this;
+  zrevrangebyscore(key: string, min: number | string, max: number | string, withscores: string): this;
+  zrevrangebyscore(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): this;
+  zrevrangebyscore(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number): this;
+  ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string): this;
+  ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string): this;
+  ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): this;
+  ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, limit: string, offset: number, count: number): this;
 
   /**
    * Determine the index of a member in a sorted set, with scores ordered from high to low.
    */
-  zrevrank(key: string, member: string): Multi;
-  ZREVRANK(key: string, member: string): Multi;
+  zrevrank(key: string, member: string): this;
+  ZREVRANK(key: string, member: string): this;
 
   /**
    * Get the score associated with the given member in a sorted set.
    */
-  zscore(key: string, member: string): Multi;
-  ZSCORE(key: string, member: string): Multi;
+  zscore(key: string, member: string): this;
+  ZSCORE(key: string, member: string): this;
 
   /**
    * Add multiple sorted sets and store the resulting sorted set in a new key.
    */
-  zunionstore: Multi;
-  ZUNIONSTORE: Multi;
+  zunionstore: Command<string | number, number, this>;
+  ZUNIONSTORE: Command<string | number, number, this>;
 
   /**
    * Incrementally iterate the keys space.
    */
-  scan: Multi;
-  SCAN: Multi;
+  scan: Command<string, [string, string[]], this>;
+  SCAN: Command<string, [string, string[]], this>;
 
   /**
    * Incrementally iterate Set elements.
    */
-  sscan: Multi;
-  SSCAN: Multi;
+  sscan: KeyCommand<string, [string, string[]], this>;
+  SSCAN: KeyCommand<string, [string, string[]], this>;
 
   /**
    * Incrementally iterate hash fields and associated values.
    */
-  hscan: Multi;
-  HSCAN: Multi;
+  hscan: KeyCommand<string, [string, string[]], this>;
+  HSCAN: KeyCommand<string, [string, string[]], this>;
 
   /**
    * Incrementally iterate sorted sets elements and associated scores.
    */
-  zscan: Multi;
-  ZSCAN: Multi;
+  zscan: KeyCommand<string, [string, string[]], this>;
+  ZSCAN: KeyCommand<string, [string, string[]], this>;
 }
