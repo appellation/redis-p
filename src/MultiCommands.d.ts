@@ -1,4 +1,4 @@
-import { this, Command, SetCommand, ListCommand, LastCommand, KeyCommand } from './';
+import { Command, SetCommand, ListCommand, LastCommand, KeyCommand } from './';
 
 
 export default interface Commands {
