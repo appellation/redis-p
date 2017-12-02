@@ -9,6 +9,8 @@ for (const k of require('./cmds.json')) {
 }
 
 const multi = redis.Multi.prototype;
-for (const k of ['exec', 'exec_atomic']) if (typeof multi[k] === 'functin') multi[k] = promisify(multi[k]);
+for (const k of ['exec', 'exec_atomic', 'exec_transaction']) {
+  if (typeof multi[k] === 'function') multi[k] = promisify(multi[k]);
+}
 
 module.exports = redis;
